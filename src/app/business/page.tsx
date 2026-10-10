@@ -172,9 +172,14 @@ export default function BusinessPage() {
       <section className="rounded-3xl bg-slate-900 p-6 text-white">
         <h2 className="text-xl font-bold">每週 5 分鐘，看懂比分背後的錢</h2>
         <p className="mt-2 text-sm text-slate-300">商業週報把本週新聞拆成：發生什麼 → 錢怎麼流 → 對球迷的影響。</p>
-        <Link href="/brief" className="mt-4 inline-block rounded-full bg-white px-5 py-2 text-sm font-semibold text-slate-900">
-          閱讀週報
-        </Link>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/brief" className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-slate-900">
+            閱讀週報
+          </Link>
+          <Link href="/insights" className="rounded-full border border-white/40 px-5 py-2 text-sm font-semibold">
+            深度分析
+          </Link>
+        </div>
       </section>
     </div>
   );

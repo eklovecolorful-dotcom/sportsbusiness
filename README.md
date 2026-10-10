@@ -76,6 +76,7 @@ src/
     teams/[league]/[team]/         92 支球隊靜態頁（SEO）
     leagues/[league]/              聯盟入門：賽制、季後賽、制度、重要日期
     calendar/                      三大聯盟重要日期
+    insights/ · insights/[slug]/   深度分析：經營模式、營運、商業故事（content/insights/*.md）
     business/ · business/topics/[topic]/  產業商業與主題頻道（轉播權、勞資…）
     brief/ · brief/[slug]/         週報列表／內文（RLS 付費牆）
     pricing/ · account/            訂閱方案／我的帳號

@@ -3,20 +3,15 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { cacheLife, cacheTag } from "next/cache";
 import { isSupabaseConfigured } from "@/lib/env";
+import { parseFrontmatter } from "@/lib/frontmatter";
 import { createPublicClient } from "@/lib/supabase/public";
 import { createClient } from "@/lib/supabase/server";
 import type { Brief } from "@/lib/types";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "brief");
 
-/** Minimal frontmatter parser for content/brief/*.md (key: value lines). */
 export function parseBriefFile(slug: string, raw: string): Brief & { body: string } {
-  const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
-  const meta: Record<string, string> = {};
-  for (const line of (m?.[1] ?? "").split("\n")) {
-    const i = line.indexOf(":");
-    if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim().replace(/^"(.*)"$/, "$1");
-  }
+  const { meta, body } = parseFrontmatter(raw);
   return {
     slug,
     title: meta.title ?? slug,
@@ -24,7 +19,7 @@ export function parseBriefFile(slug: string, raw: string): Brief & { body: strin
     excerpt: meta.excerpt ?? "",
     isPremium: meta.premium !== "false",
     publishedAt: meta.published_at ?? "",
-    body: m?.[2] ?? raw,
+    body,
   };
 }
 

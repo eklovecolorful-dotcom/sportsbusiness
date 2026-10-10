@@ -7,6 +7,7 @@ const NAV = [
   { href: "/teams", label: "球隊" },
   { href: "/calendar", label: "重要日期" },
   { href: "/business", label: "產業商業" },
+  { href: "/insights", label: "深度分析" },
   { href: "/brief", label: "商業週報" },
   { href: "/trips", label: "觀賽旅遊" },
 ];
