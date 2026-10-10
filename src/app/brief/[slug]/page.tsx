@@ -7,7 +7,9 @@ import { getCurrentUser } from "@/lib/auth";
 import { getBrief, getBriefBody, getBriefs } from "@/lib/data/briefs";
 
 export async function generateStaticParams() {
-  return (await getBriefs()).map((b) => ({ slug: b.slug }));
+  const slugs = (await getBriefs()).map((b) => b.slug);
+  // Cache Components rejects an empty list (e.g. no brief published yet); the placeholder just 404s.
+  return (slugs.length > 0 ? slugs : ["latest"]).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/brief/[slug]">): Promise<Metadata> {
