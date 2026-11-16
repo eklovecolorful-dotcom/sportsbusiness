@@ -164,7 +164,7 @@ footer{margin-top:48px;color:var(--muted);font-size:.8rem}
   <div class="inv">
     <div class="card"><h3>內容（content/）</h3>
       <ul>
-        <li>週報 2 篇：<code>2026-41</code>、<code>2026-42</code></li>
+        <li>週報：<code>2026-41</code>（已發佈）、<code>2026-48</code> MLB 封館全解析（草稿，待查證）；<code>2026-42</code> 示範佔位文已下架</li>
         <li>深度分析 4 篇：勇士隊球場（braves-battery）、NFL 營收分配、RSN 地方轉播崩盤、球隊估值</li>
         <li><code>notes/this-week/</code>：週報素材區</li>
       </ul></div>
@@ -227,7 +227,7 @@ const PHASES = [
    gate:"每個功能的閘門：情境測試通過 · detector 無錯 · 已合併 · 預覽網址用手機測過",
    files:["src/app/","src/lib/","content/"],
    done:["所有主要頁面（見下方清單）","92 支球隊靜態頁","Stripe 結帳、續訂、扣款失敗、取消、客戶入口：沙盒 21 項通過，webhook 12 次全回 200","賽程同步 cron（寫入 <code>notifications</code> outbox）","觀賽詢價表單，寄信給旅行社；2027 MLB 改為登記候補","資料來源轉接層：mock／espn（僅開發）／sportsdataio","週報 2 篇、深度分析 4 篇","Waitlist 程式：表單、server action、<code>0003_waitlist.sql</code>、<code>BILLING_MODE</code> 開關、結帳 API 關閉、付費牆與首頁改候補、文章底部表單、隱私權政策、<code>npm run waitlist:stats</code>","單元測試 21 項通過（含 waitlist 13 項、結帳關閉 2 項）；390／1280 截圖驗證"],
-   todo:["!Waitlist migration 套用到 Supabase branch 並驗證 RLS（等資料庫連線）","!「MLB 封館全解析」正式內容（2026-42 目前只是示範佔位文）","!換成有商業授權的賽程資料（ADR-0001 條款表仍空白）","!延賽通知發送器（消化 outbox → Email／Web Push）","金流（名單破 100 後決定）：TapPay／藍新或海外 Stripe，再跑一次完整付款測試","Playwright／BDD 情境測試（目前只有時區單元測試）","README 寫每 15 分鐘同步，實際是每天一次，要更正"]},
+   todo:["!Waitlist migration 套用到 Supabase branch 並驗證 RLS（等資料庫連線）","!查證並發佈「MLB 封館全解析」（<code>2026-48</code> 草稿，剩 5 個待查證，建議 11/24–11/28 發佈）","!換成有商業授權的賽程資料（ADR-0001 條款表仍空白）","!延賽通知發送器（消化 outbox → Email／Web Push）","金流（名單破 100 後決定）：TapPay／藍新或海外 Stripe，再跑一次完整付款測試","Playwright／BDD 情境測試（目前只有時區單元測試）","README 寫每 15 分鐘同步，實際是每天一次，要更正"]},
   {id:"P6", name:"品質", status:"todo",
    gate:"閘門：CI 全綠 · 沒有阻擋問題 · 符合 NFR · 設計 QA 已記錄",
    files:[],
