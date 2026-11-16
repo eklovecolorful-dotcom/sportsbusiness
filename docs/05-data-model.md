@@ -1,6 +1,6 @@
 # P3 · Data Model
 
-Migrations: `supabase/migrations/0001_core.sql`, `0002_billing_content.sql`. Seed: `supabase/seed.sql`（由 `npm run db:seed:gen` 產生）。
+Migrations: `supabase/migrations/0001_core.sql`, `0002_billing_content.sql`, `0003_waitlist.sql`, `0004_lock_down_definer_functions.sql`. Seed: `supabase/seed.sql`（由 `npm run db:seed:gen` 產生）。
 
 ```
 leagues ─┬─< teams ─┬─< players (is_taiwanese)
@@ -19,7 +19,8 @@ briefs (public meta + excerpt) ─ brief_bodies (RLS paywall)
 |---|---|---|
 | leagues, teams, games, players | 全部 | service role（cron / seed） |
 | briefs | 已發佈 | service role（publish script） |
-| brief_bodies | 免費文章，或 `has_active_subscription(auth.uid())` | service role |
+| brief_bodies | 免費文章，或 `private.has_active_subscription(auth.uid())`（0004 移出公開 API） | service role |
+| waitlist_signups | 無（RLS 開啟、不設 policy） | server action（service role） |
 | subscriptions | 本人 | webhook |
 | follows | 本人（可新增／刪除） | 本人 |
 | trip_inquiries | 本人 | server action |
