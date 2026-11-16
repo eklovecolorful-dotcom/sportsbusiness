@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sports 專案進度</title>
+<meta name="description" content="Sports（美國三大職業運動中文平台）P0–P8 各階段完成與未完成事項、內容清單與階段關聯。">
+<style>
+:root{
+  --bg:#f6f5f2; --surface:#ffffff; --surface-2:#efede8; --text:#1d1c1a; --muted:#6b6862; --line:#dedad2;
+  --done:#2f7d4f; --done-bg:#e3f1e8; --todo:#a4561b; --todo-bg:#f8eadf; --block:#b0322a; --block-bg:#f8e1df;
+  --accent:#2c5d8f; --accent-bg:#e2ecf6; --dim:.28;
+  --radius:10px; --font: "PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151513; --surface:#1e1d1b; --surface-2:#282724; --text:#ecebe7; --muted:#a19e97; --line:#383632;
+    --done:#7cc79a; --done-bg:#1f3428; --todo:#e5a26b; --todo-bg:#3a2a1c; --block:#ef8a82; --block-bg:#3d2220;
+    --accent:#8bb8e6; --accent-bg:#1f2e3d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151513; --surface:#1e1d1b; --surface-2:#282724; --text:#ecebe7; --muted:#a19e97; --line:#383632;
+  --done:#7cc79a; --done-bg:#1f3428; --todo:#e5a26b; --todo-bg:#3a2a1c; --block:#ef8a82; --block-bg:#3d2220;
+  --accent:#8bb8e6; --accent-bg:#1f2e3d;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;font-size:15px}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;margin:0 0 4px;letter-spacing:.01em}
+header p{margin:0;color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;padding:2px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+h2{font-size:1.15rem;margin:40px 0 12px}
+h3{margin:0;font-size:1rem}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.stat b{display:block;font-size:1.6rem;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat span{color:var(--muted);font-size:.85rem}
+.callout{background:var(--block-bg);border-left:4px solid var(--block);padding:12px 14px;border-radius:6px;margin-top:16px}
+.callout strong{color:var(--block)}
+/* diagram */
+.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+.diagram{overflow-x:auto}
+.diagram svg{width:100%;min-width:680px;height:auto;display:block}
+.node rect{fill:var(--surface-2);stroke:var(--line);stroke-width:1.5;rx:8}
+.node text{fill:var(--text);font-size:13px;font-family:var(--font)}
+.node .sub{fill:var(--muted);font-size:11px}
+.node{cursor:pointer;transition:opacity .15s}
+.node.s-done rect{fill:var(--done-bg);stroke:var(--done)}
+.node.s-partial rect{fill:var(--todo-bg);stroke:var(--todo)}
+.node.s-todo rect{fill:var(--surface-2);stroke:var(--muted);stroke-dasharray:4 3}
+.node.sel rect{stroke:var(--accent);stroke-width:3}
+.edge{stroke:var(--muted);stroke-width:1.5;fill:none;transition:opacity .15s}
+.edge.loop{stroke-dasharray:5 4}
+.edge.hl{stroke:var(--accent);stroke-width:2.5}
+.dim{opacity:var(--dim)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);margin-top:8px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:4px;border:1.5px solid}
+.hint{font-size:.85rem;color:var(--muted);margin:8px 0 0}
+/* edges table */
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:.9rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--surface-2);font-weight:600;font-size:.82rem;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+tr.dim td{opacity:var(--dim)}
+.tbl{overflow-x:auto}
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.filters button,.theme{font:inherit;font-size:.85rem;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+/* phases */
+.phases{display:grid;gap:14px}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;scroll-margin-top:16px;transition:opacity .15s,border-color .15s}
+.phase.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-bg)}
+.phase-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px}
+.badge{font-size:.75rem;padding:1px 8px;border-radius:999px;font-weight:600}
+.b-done{background:var(--done-bg);color:var(--done)}
+.b-partial{background:var(--todo-bg);color:var(--todo)}
+.b-todo{background:var(--surface-2);color:var(--muted)}
+.bar{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:10px 0 4px}
+.bar i{display:block;height:100%;background:var(--done)}
+.barlabel{font-size:.8rem;color:var(--muted)}
+.gate{font-size:.85rem;color:var(--muted);margin:6px 0 0}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;font-size:.8rem}
+.links a{color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:1px 8px;border-radius:999px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+@media (max-width:700px){.cols{grid-template-columns:1fr}}
+.cols h4{margin:0 0 6px;font-size:.85rem}
+.cols .d h4{color:var(--done)} .cols .t h4{color:var(--todo)}
+ul.items{list-style:none;margin:0;padding:0}
+ul.items li{padding:4px 0 4px 22px;position:relative;font-size:.9rem;border-bottom:1px dashed var(--line)}
+ul.items li:last-child{border-bottom:0}
+ul.items li::before{position:absolute;left:0;top:4px;font-weight:700}
+.d li::before{content:"✓";color:var(--done)}
+.t li::before{content:"○";color:var(--todo)}
+.t li.blk::before{content:"!";color:var(--block)}
+.t li.blk{color:var(--text)}
+.t li.blk em{font-style:normal;font-size:.75rem;color:var(--block);background:var(--block-bg);padding:0 6px;border-radius:4px;margin-left:4px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;background:var(--surface-2);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere;white-space:nowrap}
+.hidden{display:none}
+/* content inventory */
+.inv{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.card h3{font-size:.95rem;margin-bottom:6px}
+.card ul{margin:0;padding-left:18px;font-size:.88rem}
+footer{margin-top:48px;color:var(--muted);font-size:.8rem}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Sports 專案進度</h1>
+      <p>美國三大職業運動中文平台：台灣時間賽程（免費）→ 運動商業週報（付費）→ 觀賽旅遊（轉介合法旅行社）</p>
+      <div class="meta">
+        <span class="chip">流程：P1–P8 v3</span>
+        <span class="chip">模式 C（依 Playbook 02 手冊）</span>
+        <span class="chip">主題：none</span>
+        <span class="chip">更新：2026-11-16</span>
+      </div>
+    </div>
+    <button class="theme" id="theme" type="button" aria-label="切換深淺色">◐</button>
+  </header>
+
+  <section class="summary" id="summary" aria-label="總覽"></section>
+
+  <div class="callout">
+    <strong>主要風險：</strong>程式（P3、P5）已經做到很前面，但 P1 證據分數是 0 / 60，P2 的定位和 90 天指標也還沒定。
+    現在最該做的是收集真實需求證據，不是再加功能。12/1 MLB 勞資協議到期正好可以拿來做候補登記和週報轉換。
+  </div>
+
+  <h2>階段關聯</h2>
+  <div class="diagram">
+    <svg id="flow" viewBox="0 0 940 250" role="img" aria-label="P0 到 P8 的階段關聯圖"></svg>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--done-bg);border-color:var(--done)"></i>閘門已過</span>
+      <span><i class="sw" style="background:var(--todo-bg);border-color:var(--todo)"></i>進行中</span>
+      <span><i class="sw" style="background:var(--surface-2);border-color:var(--muted);border-style:dashed"></i>未開始</span>
+      <span>虛線箭頭：P8 心得回饋到下一輪 P1</span>
+    </div>
+    <p class="hint">點一個階段，會標出它的上下游，並在下方顯示該階段的細項。再點一次取消。</p>
+  </div>
+
+  <div class="tbl" style="margin-top:12px">
+    <table id="edges">
+      <thead><tr><th>上游 → 下游</th><th>傳遞什麼</th><th>目前狀況</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <h2>各階段：已完成／未完成</h2>
+  <div class="filters" role="group" aria-label="篩選">
+    <button type="button" data-f="all" aria-pressed="true">全部</button>
+    <button type="button" data-f="todo" aria-pressed="false">只看未完成</button>
+    <button type="button" data-f="done" aria-pressed="false">只看已完成</button>
+    <button type="button" data-f="blk" aria-pressed="false">只看上線阻擋項</button>
+  </div>
+  <div class="phases" id="phases"></div>
+
+  <h2>內容與程式清單</h2>
+  <div class="inv">
+    <div class="card"><h3>內容（content/）</h3>
+      <ul>
+        <li>週報 2 篇：<code>2026-41</code>、<code>2026-42</code></li>
+        <li>深度分析 4 篇：勇士隊球場（braves-battery）、NFL 營收分配、RSN 地方轉播崩盤、球隊估值</li>
+        <li><code>notes/this-week/</code>：週報素材區</li>
+      </ul></div>
+    <div class="card"><h3>頁面路由（src/app/）</h3>
+      <ul>
+        <li>免費：首頁、<code>/schedule/[league]</code>、<code>/teams</code>（92 隊靜態頁）、<code>/leagues</code>、<code>/calendar</code>、<code>/business</code>、<code>/insights</code>、<code>/brief</code></li>
+        <li>付費：<code>/pricing</code>、<code>/brief/[slug]</code>、<code>/account</code></li>
+        <li>其他：<code>/trips</code>、<code>/login</code>、<code>/legal/*</code>（隱私、退款、免責）</li>
+        <li>API：<code>/api/cron/sync-schedule</code>、<code>/api/stripe/*</code></li>
+      </ul></div>
+    <div class="card"><h3>規格與資料</h3>
+      <ul>
+        <li>BDD：<code>paywall</code>、<code>taiwan-time</code>、<code>trip-inquiry</code>.feature</li>
+        <li>Migration 2 支＋<code>seed.sql</code>（92 隊）</li>
+        <li>ADR-0001 只用授權資料、ADR-0002 內容紅線</li>
+        <li>資料來源：<code>mock</code>／<code>espn</code>（僅開發）／<code>sportsdataio</code>（未授權）</li>
+      </ul></div>
+    <div class="card"><h3>測試與自動化</h3>
+      <ul>
+        <li>Vitest：<code>src/lib/time.test.ts</code>（時區／夏令時間 6 項）</li>
+        <li>Stripe 沙盒流程 21 項手動驗證通過（非自動化測試）</li>
+        <li>Claude 指令 4 個：gen-team-pages、implement、sync-schedule、weekly-biz-brief</li>
+        <li>Cron：<code>vercel.json</code> 每天 22:00 UTC 一次（README 仍寫每 15 分鐘，需更正）</li>
+      </ul></div>
+  </div>
+
+  <footer>資料依據：<code>docs/</code>、<code>features/</code>、<code>supabase/</code>、<code>src/</code>、<code>content/</code>、git log 與 2026-10 的開發紀錄。內容更新時請直接改本檔下方的 <code>PHASES</code> 與 <code>EDGES</code>。</footer>
+</div>
+
+<script>
+// status: done = 閘門已過 · partial = 進行中 · todo = 未開始
+// todo items: prefix "!" marks a go-live blocker
+const PHASES = [
+  {id:"P0", name:"環境與基本資料", status:"partial",
+   gate:"閘門：MCP 已連線 · 設計 skill 已裝在專案內 · .env.local 不進 git · intake.md 完成",
+   files:["CLAUDE.md","AGENTS.md",".gitignore"],
+   done:["Next.js 16 專案與 git（6 個 commit）","CLAUDE.md、AGENTS.md 專案規則","<code>.env.local</code> 已排除在 git 外，<code>.env.example</code> 已備","Vercel 專案已連結（<code>.vercel/</code>）","Supabase、Stripe、Vercel、Linear MCP 可用","4 個 Claude 指令（<code>.claude/commands/</code>）"],
+   todo:["<code>docs/intake.md</code>（預算、90 天指標、語言、品牌形容詞）","<code>docs/00-roadmap.md</code>（取代按週排的 <code>docs/roadmap.md</code>）","把 Playbook 02 手冊複製到 <code>docs/research/</code>","專案層級 <code>.mcp.json</code>","四個設計 skill 裝到 <code>.claude/skills/</code>","GitHub MCP token 過期，需重新設定"]},
+  {id:"P1", name:"市場與證據", status:"partial",
+   gate:"閘門：證據分數 ≥ 60 且至少一項真實世界來源 · 前三大痛點有證據 · 數字有來源或標「待查證」　目前：0 / 60",
+   files:["docs/01-market.md","docs/02-pains.md"],
+   done:["<code>01-market.md</code>：三個目標市場、三大聯盟營收／轉播／估值表（引自手冊）","四類競品與「中文 × 商業解讀 × 觀賽規劃」空白點","<code>02-pains.md</code>：4 種使用者的痛點表","8 位球迷訪談題目"],
+   todo:["市場數字補來源網址，或標「待查證」","至少 5 個具名競品（價格、模式、弱點、截圖）","建 <code>docs/evidence/</code>","候補登記頁，目標 50 人（30 分）","整理 50 則以上 PTT／Dcard／Threads 球迷留言，依痛點分類（25 分）","完成 8 位球迷訪談（最多 25 分）","Google Trends 關鍵字需求（10 分）","痛點排序（頻率 × 強度 × 不滿意度）","寫下要在 P8 驗證的假設","改名整併成 <code>01-discovery.md</code>"]},
+  {id:"P2", name:"定位、商業模式、MVP 範圍", short:"定位與定價", status:"partial",
+   gate:"閘門（由你決定）：定價已選 · Must 清單凍結 · 90 天驗證指標 · 品牌形容詞",
+   files:["docs/01-market.md"],
+   done:["變現階梯假設：付費週報 → 觀賽旅遊佣金 → 企業講座 → 贊助","月訂 NT$150 已在 Stripe 沙盒建立","不做的事：不做第二個 ESPN、不碰博弈、不自營旅行團"],
+   todo:["<code>02-strategy.md</code>","一句話價值主張","SWOT／TOWS","單位經濟（假設要標示）","MoSCoW，凍結 Must 清單","90 天驗證指標","3 個品牌形容詞、3 個「不要像」的網站"]},
+  {id:"P3", name:"規格", status:"partial",
+   gate:"閘門：每個 Must 都有 .feature · schema 已審 · NFR 目標已設 · 待決問題已處理或記錄",
+   files:["docs/03-prd.md","docs/04-use-cases.md","docs/05-data-model.md","features/","docs/adr/"],
+   done:["<code>03-prd.md</code>：免費／付費／高單價三層與路由","<code>04-use-cases.md</code>：UC-01 賽程與延賽、UC-02 訂閱、UC-03 觀賽詢價","<code>05-data-model.md</code>＋2 支 migration，每張表都有 RLS","付費牆由 RLS 擋在 <code>brief_bodies</code>，不靠畫面","3 支 .feature：paywall、taiwan-time、trip-inquiry","ADR-0001 授權資料、ADR-0002 內容紅線"],
+   todo:["<code>07-nfr.md</code>：LCP ≤ 2.5 s、INP ≤ 200 ms、CLS ≤ 0.1、WCAG 2.2 AA、個資法","延賽通知（UC-01 例外流程）的 .feature","待決問題清單（台灣球員分頁已移除，週報段落去留未定）"]},
+  {id:"P4", name:"設計", status:"partial",
+   gate:"閘門：MASTER.md 與 tokens 已提交 · 主要畫面你已核准 · 對比度通過 · impeccable detect 無錯誤",
+   files:["docs/06-design-system.md","src/components/"],
+   done:["<code>06-design-system.md</code>：390px 手機優先、中性聯盟色塊、不用 Logo","GameCard（台灣時間大字、延賽標示、示範資料標註）","PaywallCard","每篇發佈前的內容審查清單"],
+   todo:["<code>design-system/sports/MASTER.md</code>","完整 tokens：顏色、字級（含中文字體）、間距、圓角、動態","Figma 主要畫面","對比度檢查","<code>npx impeccable detect</code>","你核准設計"]},
+  {id:"P5", name:"開發", status:"partial",
+   gate:"每個功能的閘門：情境測試通過 · detector 無錯 · 已合併 · 預覽網址用手機測過",
+   files:["src/app/","src/lib/","content/"],
+   done:["所有主要頁面（見下方清單）","92 支球隊靜態頁","Stripe 結帳、續訂、扣款失敗、取消、客戶入口：沙盒 21 項通過，webhook 12 次全回 200","賽程同步 cron（寫入 <code>notifications</code> outbox）","觀賽詢價表單，寄信給旅行社；2027 MLB 改為登記候補","資料來源轉接層：mock／espn（僅開發）／sportsdataio","週報 2 篇、深度分析 4 篇"],
+   todo:["!換成有商業授權的賽程資料（ADR-0001 條款表仍空白）","!延賽通知發送器（消化 outbox → Email／Web Push）","用你自己的 Stripe 帳號重跑測試，並實際走一次結帳頁付款","Playwright／BDD 情境測試（目前只有時區單元測試）","README 寫每 15 分鐘同步，實際是每天一次，要更正"]},
+  {id:"P6", name:"品質", status:"todo",
+   gate:"閘門：CI 全綠 · 沒有阻擋問題 · 符合 NFR · 設計 QA 已記錄",
+   files:[],
+   done:[],
+   todo:["CI：lint、typecheck、單元、e2e、impeccable detect","資安檢查（OWASP Top 10、webhook 簽章、RLS）","Lighthouse／axe 對照 <code>07-nfr.md</code>","<code>/impeccable audit</code> 與 polish","<code>docs/08-design-qa.md</code>"]},
+  {id:"P7", name:"部署", status:"partial",
+   gate:"閘門：上線檢查清單全部通過",
+   files:["vercel.json","src/app/legal/"],
+   done:["已部署到 Vercel（sportsbusiness.vercel.app）","隱私、退款、免責頁面草稿"],
+   todo:["!資料授權條款簽定並填入 ADR-0001","!隱私權與退款政策定稿","!旅行社合作契約","!Vercel Cron 與 API 用量監控","!資料超過 30 分鐘未更新的告警","!正式金鑰只放 Production，完成一筆真實交易並退款","網域、HTTPS、sitemap、OG 圖驗證"]},
+  {id:"P8", name:"上線與學習", status:"todo",
+   gate:"閘門：第一筆轉換有完整追蹤 · 30 天心得已記錄",
+   files:[],
+   done:[],
+   todo:["<code>docs/launch-plan.md</code>：管道、日期、UTM 規則","<code>content/calendar.md</code>","12/1 MLB 勞資到期「封館全解析」長片與週報","一篇主文改寫成 LinkedIn ×3、IG 輪播、Threads ×5、YouTube 腳本、電子報","<code>docs/metrics.md</code>：流量、轉換、留存、各來源營收","對照 P1 假設與 90 天指標，寫下一輪待辦"]}
+];
+
+const EDGES = [
+  ["P0","P1","intake 的目標與預算決定要收集哪些證據","intake.md 未建"],
+  ["P1","P2","排序後的痛點、競品弱點 → 價值主張與定價","證據 0 分，定價沒有根據"],
+  ["P1","P8","P1 寫下的假設，上線後要驗證","假設還沒寫"],
+  ["P2","P3","凍結的 Must 清單 → PRD 與 .feature","PRD 先寫了，Must 清單沒凍結"],
+  ["P2","P4","品牌形容詞、不要像的網站 → 設計方向","未定"],
+  ["P3","P4","使用情境、路由 → 主要畫面","可用"],
+  ["P3","P5","feature、schema、RLS → 測試與實作","已用，缺 NFR"],
+  ["P4","P5","tokens、MASTER.md → 元件只用 tokens","MASTER.md 未建"],
+  ["P5","P6","合併的功能 → CI、稽核","沒有 CI"],
+  ["P6","P7","CI 全綠、NFR 達標 → 正式上線","未開始"],
+  ["P7","P8","正式網站、金流、追蹤 → 行銷與數據","網站已上，檢查清單未過"],
+  ["P8","P1","上線心得 → 下一輪的證據與待辦","未開始"]
+];
+
+const $ = s => document.querySelector(s);
+const LABEL = {done:"閘門已過", partial:"進行中", todo:"未開始"};
+const strip = s => s.replace(/^!/,"");
+
+// summary
+(function(){
+  let d=0,t=0,b=0;
+  PHASES.forEach(p=>{d+=p.done.length;t+=p.todo.length;b+=p.todo.filter(x=>x.startsWith("!")).length});
+  const passed = PHASES.filter(p=>p.status==="done").length;
+  $("#summary").innerHTML = [
+    [`${d} / ${d+t}`,"事項已完成"],
+    [t,"事項未完成"],
+    [b,"上線阻擋項"],
+    [`${passed} / 9`,"階段閘門已過"],
+    ["0 / 60","P1 證據分數"]
+  ].map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+})();
+
+// diagram
+const POS = {}; const W=88,H=54;
+PHASES.forEach((p,i)=>{POS[p.id]={x:14+i*102,y:100}});
+// lift P4 and P8-ish branches for readability
+POS.P2.y=40; POS.P4.y=160; POS.P3.y=40; POS.P8.y=40;
+(function(){
+  const svg=$("#flow"); const ns="http://www.w3.org/2000/svg";
+  svg.innerHTML=`<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="currentColor"/></marker></defs>`;
+  svg.style.color="var(--muted)";
+  EDGES.forEach(([a,b])=>{
+    const A=POS[a],B=POS[b]; const path=document.createElementNS(ns,"path");
+    let d;
+    if(a==="P8"&&b==="P1"){ d=`M${A.x+W/2},${A.y} C${A.x+W/2},4 ${B.x+W/2},4 ${B.x+W/2},${B.y}`; path.classList.add("loop"); }
+    else if(a==="P1"&&b==="P8"){ d=`M${A.x+W/2},${A.y+H} C${A.x+W/2},246 ${B.x+W/2},246 ${B.x+W/2},${B.y+H}`; }
+    else { const x1=A.x+W, y1=A.y+H/2, x2=B.x, y2=B.y+H/2; const mx=(x1+x2)/2; d=`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2-2},${y2}`;
+      if(B.x<=A.x){ d=`M${A.x+W/2},${A.y+H} L${B.x+W/2},${B.y-2}`; } }
+    path.setAttribute("d",d); path.setAttribute("class",(path.getAttribute("class")||"")+" edge");
+    path.setAttribute("marker-end","url(#arr)"); path.dataset.a=a; path.dataset.b=b; svg.appendChild(path);
+  });
+  PHASES.forEach(p=>{
+    const g=document.createElementNS(ns,"g"); const {x,y}=POS[p.id];
+    g.setAttribute("class",`node s-${p.status}`); g.dataset.id=p.id; g.setAttribute("tabindex","0"); g.setAttribute("role","button");
+    g.setAttribute("aria-label",`${p.id} ${p.name}，${LABEL[p.status]}`);
+    const pct = Math.round(p.done.length/(p.done.length+p.todo.length)*100);
+    g.innerHTML=`<rect x="${x}" y="${y}" width="${W}" height="${H}" rx="8"/><text x="${x+10}" y="${y+21}" font-weight="700">${p.id}</text><text class="sub" x="${x+10}" y="${y+38}">${p.short||p.name.slice(0,6)}</text><text class="sub" x="${x+W-10}" y="${y+21}" text-anchor="end">${pct}%</text>`;
+    g.addEventListener("click",()=>select(p.id));
+    g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(p.id)}});
+    svg.appendChild(g);
+  });
+})();
+
+// edges table
+$("#edges tbody").innerHTML = EDGES.map(([a,b,what,now])=>`<tr data-a="${a}" data-b="${b}"><td><b>${a}</b> → <b>${b}</b></td><td>${what}</td><td>${now}</td></tr>`).join("");
+
+// phase cards
+$("#phases").innerHTML = PHASES.map(p=>{
+  const total=p.done.length+p.todo.length, pct=Math.round(p.done.length/total*100);
+  const up=EDGES.filter(e=>e[1]===p.id).map(e=>e[0]), down=EDGES.filter(e=>e[0]===p.id).map(e=>e[1]);
+  return `<article class="phase" id="card-${p.id}" data-id="${p.id}">
+    <div class="phase-head"><h3>${p.id}・${p.name}</h3><span class="badge b-${p.status}">${LABEL[p.status]}</span></div>
+    <div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>
+    <div class="barlabel">${p.done.length} 項完成・${p.todo.length} 項未完成</div>
+    <p class="gate">${p.gate}</p>
+    <div class="links">${up.length?`<span>上游</span>${up.map(x=>`<a href="#card-${x}" data-go="${x}">${x}</a>`).join("")}`:""}${down.length?`<span style="margin-left:8px">下游</span>${down.map(x=>`<a href="#card-${x}" data-go="${x}">${x}</a>`).join("")}`:""}${p.files.length?`<span style="margin-left:8px">檔案</span>${p.files.map(f=>`<code>${f}</code>`).join(" ")}`:""}</div>
+    <div class="cols">
+      <div class="d"><h4>已完成</h4><ul class="items">${p.done.length?p.done.map(x=>`<li data-k="done">${x}</li>`).join(""):'<li data-k="done" style="color:var(--muted)">尚無</li>'}</ul></div>
+      <div class="t"><h4>未完成</h4><ul class="items">${p.todo.map(x=>x.startsWith("!")?`<li class="blk" data-k="blk">${strip(x)}<em>上線阻擋</em></li>`:`<li data-k="todo">${x}</li>`).join("")}</ul></div>
+    </div></article>`;
+}).join("");
+
+document.querySelectorAll("[data-go]").forEach(a=>a.addEventListener("click",e=>{select(a.dataset.go,true)}));
+
+let current=null;
+function select(id, force){
+  current = (current===id && !force) ? null : id;
+  const rel = new Set(current?[current]:[]);
+  if(current) EDGES.forEach(([a,b])=>{ if(a===current) rel.add(b); if(b===current) rel.add(a); });
+  document.querySelectorAll(".node").forEach(n=>{ n.classList.toggle("dim", !!current && !rel.has(n.dataset.id)); n.classList.toggle("sel", n.dataset.id===current); });
+  document.querySelectorAll(".edge").forEach(e=>{ const on=current&&(e.dataset.a===current||e.dataset.b===current); e.classList.toggle("hl",!!on); e.classList.toggle("dim",!!current&&!on); });
+  document.querySelectorAll("#edges tr[data-a]").forEach(r=>{ const on=r.dataset.a===current||r.dataset.b===current; r.classList.toggle("dim",!!current&&!on); });
+  document.querySelectorAll(".phase").forEach(c=>{ c.classList.toggle("sel",c.dataset.id===current); c.classList.toggle("dim",!!current&&!rel.has(c.dataset.id)); });
+  if(current && !force) document.getElementById("card-"+current).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth", block:"start"});
+}
+
+// filters
+document.querySelectorAll(".filters button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".filters button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  const f=b.dataset.f;
+  document.querySelectorAll("ul.items li").forEach(li=>{
+    const k=li.dataset.k;
+    const show = f==="all" || (f==="done"&&k==="done") || (f==="todo"&&(k==="todo"||k==="blk")) || (f==="blk"&&k==="blk");
+    li.classList.toggle("hidden",!show);
+  });
+  document.querySelectorAll(".cols > div").forEach(col=>{
+    col.classList.toggle("hidden", f!=="all" && !col.querySelector("li:not(.hidden)"));
+  });
+  document.querySelectorAll(".phase").forEach(c=>c.classList.toggle("hidden", f!=="all" && !c.querySelector("li:not(.hidden)")));
+}));
+
+// theme toggle (per-viewer convenience)
+(function(){
+  const root=document.documentElement;
+  try{ const t=localStorage.getItem("progress-theme"); if(t) root.dataset.theme=t; }catch(e){}
+  $("#theme").addEventListener("click",()=>{
+    const dark = root.dataset.theme ? root.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try{ localStorage.setItem("progress-theme", root.dataset.theme); }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
