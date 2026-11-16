@@ -1,7 +1,7 @@
 # Intake — Sports（美國三大職業運動中文平台）
 
 > 建立：2026-11-16。來源：Playbook 02（`docs/research/`）、`docs/02-strategy.md` 中由創辦人拍板的 P2 決定。
-> 標 **[待填]** 的欄位需要創辦人補上。
+> 全部欄位已於 2026-11-16 定案。
 
 mode: C（已有現成手冊：`docs/research/us-big-three-sports-business-playbook.md`，Playbook 02，數據截至 2026-10）
 
@@ -22,9 +22,11 @@ existing_material:
 - `docs/02-strategy.md`（P2 已拍板）
 - 已上線網站 https://sportsbusiness.vercel.app 與程式碼（P3–P5 大部分已完成）
 
-monthly_budget_twd: **[待填]**
-- 目前已知的固定成本來源：授權賽程資料（ADR-0001，最大變數）、Supabase、Vercel、Resend、網域。
-- 單位經濟會用這個數字算損益兩平人數（`docs/02-strategy.md` §5）。
+monthly_budget_twd: **NT$1,500／月**（硬上限，前 90 天驗證期；約 US$45）
+- 只支應網域與必要的雲端額度（Supabase、Vercel、Resend）。
+- 不購買商業授權賽程 API；名單破 100 且付費驗證通過後再擴充。
+- 損益兩平：NT$1,500 ÷ NT$150 = 10 位付費訂戶（未計手續費；含手續費約 11 位）。
+- ⚠️ 與 ADR-0001「只用授權資料」衝突，待修訂（見 `docs/02-strategy.md` §5）。
 
 constraints:
 - 一人經營，內容產能有限。
@@ -38,7 +40,7 @@ success_metric_90d: 2026-11-16 → 2027-02-14
 - 次指標：付費訂閱（或候補表單中願意以 NT$150／月或 NT$1,500／年付費）**30 人**
 - 檢查點：50 人（P1 行為證據達標）→ 100 人（決定金流）→ 2/14 寫 P8 學習紀錄
 
-languages: 繁體中文為主，英文為輔（介面重要標籤與錯誤訊息中英並列，例如「延賽 Postponed」）；暫不做完整英文版與 hreflang。**[待確認：若要完整雙語請改這行]**
+languages: 繁體中文為主，重要標籤、技術術語與錯誤訊息附英文（例如「延賽 Postponed」）；現階段不做完整英文版與 hreflang，集中台灣與華語受眾。（2026-11-16 定案）
 
 non_goals:
 - 不做第二個 ESPN：即時比分、數據 App
