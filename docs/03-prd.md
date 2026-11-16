@@ -4,7 +4,7 @@
 | 層級 | 內容 | 路由 |
 |---|---|---|
 | 免費 | 台灣時間賽程、球隊頁、聯盟入門、重要日期、產業商業、深度分析、免費週報 | `/`, `/schedule/*`, `/teams/*`, `/leagues/*`, `/calendar`, `/business/*`, `/insights/*`, `/brief` |
-| 付費 | 運動商業週報（Stripe 訂閱 + RLS） | `/pricing`, `/brief/[slug]`, `/account` |
+| 付費（即將開放） | 運動商業週報。初期為候補登記＋付費意願（`BILLING_MODE=waitlist`）；名單破 100 再開金流（Stripe 訂閱 + RLS 已完成） | `/pricing#waitlist`, `/brief/[slug]`, `/account` |
 | 高單價 | 美國觀賽旅遊（轉介合法旅行社） | `/trips` |
 
 ## 非功能需求

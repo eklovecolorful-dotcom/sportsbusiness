@@ -128,8 +128,8 @@ footer{margin-top:48px;color:var(--muted);font-size:.8rem}
   <section class="summary" id="summary" aria-label="總覽"></section>
 
   <div class="callout">
-    <strong>主要風險：</strong>程式（P3、P5）已經做到很前面，但 P1 證據分數是 0 / 60，P2 的定位和 90 天指標也還沒定。
-    現在最該做的是收集真實需求證據，不是再加功能。12/1 MLB 勞資協議到期正好可以拿來做候補登記和週報轉換。
+    <strong>主要風險：</strong>程式（P3、P5）已經做到很前面，P2 也已拍板，但 P1 證據分數仍是 0 / 60。
+    現在最該做的是收集真實需求證據，不是再加功能。下一步是做 Waitlist，趕在 12/1 MLB 封館前把流量轉成名單（90 天目標 500 人）。
   </div>
 
   <h2>階段關聯</h2>
@@ -201,22 +201,22 @@ const PHASES = [
   {id:"P0", name:"環境與基本資料", status:"partial",
    gate:"閘門：MCP 已連線 · 設計 skill 已裝在專案內 · .env.local 不進 git · intake.md 完成",
    files:["CLAUDE.md","AGENTS.md",".gitignore"],
-   done:["Next.js 16 專案與 git（6 個 commit）","CLAUDE.md、AGENTS.md 專案規則","<code>.env.local</code> 已排除在 git 外，<code>.env.example</code> 已備","Vercel 專案已連結（<code>.vercel/</code>）","Supabase、Stripe、Vercel、Linear MCP 可用","4 個 Claude 指令（<code>.claude/commands/</code>）"],
-   todo:["<code>docs/intake.md</code>（預算、90 天指標、語言、品牌形容詞）","<code>docs/00-roadmap.md</code>（取代按週排的 <code>docs/roadmap.md</code>）","把 Playbook 02 手冊複製到 <code>docs/research/</code>","專案層級 <code>.mcp.json</code>","四個設計 skill 裝到 <code>.claude/skills/</code>","GitHub MCP token 過期，需重新設定"]},
+   done:["Next.js 16 專案與 git（6 個 commit）","CLAUDE.md、AGENTS.md 專案規則","<code>.env.local</code> 已排除在 git 外，<code>.env.example</code> 已備","Vercel 專案已連結（<code>.vercel/</code>）","Supabase、Stripe、Vercel、Linear MCP 可用","4 個 Claude 指令（<code>.claude/commands/</code>）","Playbook 02 手冊已複製到 <code>docs/research/</code>"],
+   todo:["<code>docs/intake.md</code>（預算、90 天指標、語言、品牌形容詞）","<code>docs/00-roadmap.md</code>（取代按週排的 <code>docs/roadmap.md</code>）","專案層級 <code>.mcp.json</code>","四個設計 skill 裝到 <code>.claude/skills/</code>","GitHub MCP token 過期，需重新設定","!Supabase 專案網址已無法解析（專案疑似已刪除），需重建或找回並設定 Supabase MCP／CLI"]},
   {id:"P1", name:"市場與證據", status:"partial",
    gate:"閘門：證據分數 ≥ 60 且至少一項真實世界來源 · 前三大痛點有證據 · 數字有來源或標「待查證」　目前：0 / 60",
-   files:["docs/01-market.md","docs/02-pains.md"],
-   done:["<code>01-market.md</code>：三個目標市場、三大聯盟營收／轉播／估值表（引自手冊）","四類競品與「中文 × 商業解讀 × 觀賽規劃」空白點","<code>02-pains.md</code>：4 種使用者的痛點表","8 位球迷訪談題目"],
-   todo:["市場數字補來源網址，或標「待查證」","至少 5 個具名競品（價格、模式、弱點、截圖）","建 <code>docs/evidence/</code>","候補登記頁，目標 50 人（30 分）","整理 50 則以上 PTT／Dcard／Threads 球迷留言，依痛點分類（25 分）","完成 8 位球迷訪談（最多 25 分）","Google Trends 關鍵字需求（10 分）","痛點排序（頻率 × 強度 × 不滿意度）","寫下要在 P8 驗證的假設","改名整併成 <code>01-discovery.md</code>"]},
-  {id:"P2", name:"定位、商業模式、MVP 範圍", short:"定位與定價", status:"partial",
-   gate:"閘門（由你決定）：定價已選 · Must 清單凍結 · 90 天驗證指標 · 品牌形容詞",
-   files:["docs/01-market.md"],
-   done:["變現階梯假設：付費週報 → 觀賽旅遊佣金 → 企業講座 → 贊助","月訂 NT$150 已在 Stripe 沙盒建立","不做的事：不做第二個 ESPN、不碰博弈、不自營旅行團"],
-   todo:["<code>02-strategy.md</code>","一句話價值主張","SWOT／TOWS","單位經濟（假設要標示）","MoSCoW，凍結 Must 清單","90 天驗證指標","3 個品牌形容詞、3 個「不要像」的網站"]},
+   files:["docs/01-discovery.md","docs/research/"],
+   done:["<code>01-market.md</code>：三個目標市場、三大聯盟營收／轉播／估值表（引自手冊）","四類競品與「中文 × 商業解讀 × 觀賽規劃」空白點","<code>02-pains.md</code>：4 種使用者的痛點表","8 位球迷訪談題目","<code>01-discovery.md</code> 草稿：整併手冊與舊文件、列出缺口與最便宜過關路線"],
+   todo:["市場數字補來源網址，或標「待查證」","台灣端市場數字（收視、社群、赴美看球）","刷新手冊數據並改引原始出處","至少 5 個具名競品（價格、模式、弱點、截圖）","建 <code>docs/evidence/</code>","候補登記頁，目標 50 人（30 分）","整理 50 則以上 PTT／Dcard／Threads 球迷留言，依痛點分類（25 分）","完成 8 位球迷訪談（最多 25 分）","Google Trends 關鍵字需求（10 分）","痛點排序（頻率 × 強度 × 不滿意度）","寫下要在 P8 驗證的假設"]},
+  {id:"P2", name:"定位、商業模式、MVP 範圍", short:"定位與定價", status:"done",
+   gate:"閘門（由你決定）：定價已選 · Must 清單凍結 · 90 天驗證指標 · 品牌形容詞　✅ 2026-11-16 拍板（P1 未過，override）",
+   files:["docs/02-strategy.md"],
+   done:["<code>02-strategy.md</code>：價值主張、SWOT／TOWS、變現階梯、單位經濟示意","定價暫定月訂 NT$150、年訂 NT$1,500（待驗證假設）","金流：初期不開正式收款，改免費 Waitlist；名單破 100 再決定 TapPay／藍新或海外 Stripe","Must 凍結：台灣時間賽程、免費週報與商業文章、Waitlist、觀賽詢價","台灣球員追蹤維持移除（Won't v1）","90 天指標：名單 500 人（主）、付費 30 人（次）","品牌：俐落、商業視角、有憑有據","反例：入口網站體育版、運彩報牌網站、粉絲應援論壇","Decisions 已記錄（含 P1 override）"],
+   todo:["P1 有證據後回頭檢查定價與 Must","單位經濟填入月預算（intake）"]},
   {id:"P3", name:"規格", status:"partial",
    gate:"閘門：每個 Must 都有 .feature · schema 已審 · NFR 目標已設 · 待決問題已處理或記錄",
    files:["docs/03-prd.md","docs/04-use-cases.md","docs/05-data-model.md","features/","docs/adr/"],
-   done:["<code>03-prd.md</code>：免費／付費／高單價三層與路由","<code>04-use-cases.md</code>：UC-01 賽程與延賽、UC-02 訂閱、UC-03 觀賽詢價","<code>05-data-model.md</code>＋2 支 migration，每張表都有 RLS","付費牆由 RLS 擋在 <code>brief_bodies</code>，不靠畫面","3 支 .feature：paywall、taiwan-time、trip-inquiry","ADR-0001 授權資料、ADR-0002 內容紅線"],
+   done:["<code>03-prd.md</code>：免費／付費／高單價三層與路由","<code>04-use-cases.md</code>：UC-01 賽程與延賽、UC-02 訂閱、UC-03 觀賽詢價","<code>05-data-model.md</code>＋2 支 migration，每張表都有 RLS","付費牆由 RLS 擋在 <code>brief_bodies</code>，不靠畫面","3 支 .feature：paywall、taiwan-time、trip-inquiry","ADR-0001 授權資料、ADR-0002 內容紅線","UC-02 改為候補模式；<code>waitlist.feature</code>（8 個情境）；PRD 與 paywall.feature 已更新"],
    todo:["<code>07-nfr.md</code>：LCP ≤ 2.5 s、INP ≤ 200 ms、CLS ≤ 0.1、WCAG 2.2 AA、個資法","延賽通知（UC-01 例外流程）的 .feature","待決問題清單（台灣球員分頁已移除，週報段落去留未定）"]},
   {id:"P4", name:"設計", status:"partial",
    gate:"閘門：MASTER.md 與 tokens 已提交 · 主要畫面你已核准 · 對比度通過 · impeccable detect 無錯誤",
@@ -226,8 +226,8 @@ const PHASES = [
   {id:"P5", name:"開發", status:"partial",
    gate:"每個功能的閘門：情境測試通過 · detector 無錯 · 已合併 · 預覽網址用手機測過",
    files:["src/app/","src/lib/","content/"],
-   done:["所有主要頁面（見下方清單）","92 支球隊靜態頁","Stripe 結帳、續訂、扣款失敗、取消、客戶入口：沙盒 21 項通過，webhook 12 次全回 200","賽程同步 cron（寫入 <code>notifications</code> outbox）","觀賽詢價表單，寄信給旅行社；2027 MLB 改為登記候補","資料來源轉接層：mock／espn（僅開發）／sportsdataio","週報 2 篇、深度分析 4 篇"],
-   todo:["!換成有商業授權的賽程資料（ADR-0001 條款表仍空白）","!延賽通知發送器（消化 outbox → Email／Web Push）","用你自己的 Stripe 帳號重跑測試，並實際走一次結帳頁付款","Playwright／BDD 情境測試（目前只有時區單元測試）","README 寫每 15 分鐘同步，實際是每天一次，要更正"]},
+   done:["所有主要頁面（見下方清單）","92 支球隊靜態頁","Stripe 結帳、續訂、扣款失敗、取消、客戶入口：沙盒 21 項通過，webhook 12 次全回 200","賽程同步 cron（寫入 <code>notifications</code> outbox）","觀賽詢價表單，寄信給旅行社；2027 MLB 改為登記候補","資料來源轉接層：mock／espn（僅開發）／sportsdataio","週報 2 篇、深度分析 4 篇","Waitlist 程式：表單、server action、<code>0003_waitlist.sql</code>、<code>BILLING_MODE</code> 開關、結帳 API 關閉、付費牆與首頁改候補、文章底部表單、隱私權政策、<code>npm run waitlist:stats</code>","單元測試 21 項通過（含 waitlist 13 項、結帳關閉 2 項）；390／1280 截圖驗證"],
+   todo:["!Waitlist migration 套用到 Supabase branch 並驗證 RLS（等資料庫連線）","!「MLB 封館全解析」正式內容（2026-42 目前只是示範佔位文）","!換成有商業授權的賽程資料（ADR-0001 條款表仍空白）","!延賽通知發送器（消化 outbox → Email／Web Push）","金流（名單破 100 後決定）：TapPay／藍新或海外 Stripe，再跑一次完整付款測試","Playwright／BDD 情境測試（目前只有時區單元測試）","README 寫每 15 分鐘同步，實際是每天一次，要更正"]},
   {id:"P6", name:"品質", status:"todo",
    gate:"閘門：CI 全綠 · 沒有阻擋問題 · 符合 NFR · 設計 QA 已記錄",
    files:[],
@@ -237,7 +237,7 @@ const PHASES = [
    gate:"閘門：上線檢查清單全部通過",
    files:["vercel.json","src/app/legal/"],
    done:["已部署到 Vercel（sportsbusiness.vercel.app）","隱私、退款、免責頁面草稿"],
-   todo:["!資料授權條款簽定並填入 ADR-0001","!隱私權與退款政策定稿","!旅行社合作契約","!Vercel Cron 與 API 用量監控","!資料超過 30 分鐘未更新的告警","!正式金鑰只放 Production，完成一筆真實交易並退款","網域、HTTPS、sitemap、OG 圖驗證"]},
+   todo:["!資料授權條款簽定並填入 ADR-0001","!隱私權與退款政策定稿","!旅行社合作契約","!Vercel Cron 與 API 用量監控","!資料超過 30 分鐘未更新的告警","正式金鑰只放 Production，完成一筆真實交易並退款（延後到金流決定後）","網域、HTTPS、sitemap、OG 圖驗證"]},
   {id:"P8", name:"上線與學習", status:"todo",
    gate:"閘門：第一筆轉換有完整追蹤 · 30 天心得已記錄",
    files:[],
@@ -247,10 +247,10 @@ const PHASES = [
 
 const EDGES = [
   ["P0","P1","intake 的目標與預算決定要收集哪些證據","intake.md 未建"],
-  ["P1","P2","排序後的痛點、競品弱點 → 價值主張與定價","證據 0 分，定價沒有根據"],
+  ["P1","P2","排序後的痛點、競品弱點 → 價值主張與定價","P2 先定案（override），定價待 P1 證據驗證"],
   ["P1","P8","P1 寫下的假設，上線後要驗證","假設還沒寫"],
-  ["P2","P3","凍結的 Must 清單 → PRD 與 .feature","PRD 先寫了，Must 清單沒凍結"],
-  ["P2","P4","品牌形容詞、不要像的網站 → 設計方向","未定"],
+  ["P2","P3","凍結的 Must 清單 → PRD 與 .feature","Must 已凍結；PRD 與 UC-02 需改成 Waitlist"],
+  ["P2","P4","品牌形容詞、不要像的網站 → 設計方向","已定：俐落、商業視角、有憑有據"],
   ["P3","P4","使用情境、路由 → 主要畫面","可用"],
   ["P3","P5","feature、schema、RLS → 測試與實作","已用，缺 NFR"],
   ["P4","P5","tokens、MASTER.md → 元件只用 tokens","MASTER.md 未建"],

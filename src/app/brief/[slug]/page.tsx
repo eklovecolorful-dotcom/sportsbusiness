@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Markdown } from "@/components/markdown";
 import { PaywallCard } from "@/components/paywall-card";
+import { WaitlistForm } from "@/components/waitlist-form";
+import { billingMode } from "@/lib/env";
 import { getCurrentUser } from "@/lib/auth";
 import { getBrief, getBriefBody, getBriefs } from "@/lib/data/briefs";
 
@@ -40,7 +42,13 @@ export default async function BriefPage({ params }: PageProps<"/brief/[slug]">) 
 
 async function BriefBody({ slug, excerpt }: { slug: string; excerpt: string }) {
   const [body, user] = await Promise.all([getBriefBody(slug), getCurrentUser()]);
-  if (body) return <Markdown source={body} />;
+  if (body)
+    return (
+      <div className="space-y-8">
+        <Markdown source={body} />
+        {billingMode() === "waitlist" && <WaitlistForm compact />}
+      </div>
+    );
   return (
     <div className="space-y-6">
       <p className="text-slate-700">{excerpt}</p>

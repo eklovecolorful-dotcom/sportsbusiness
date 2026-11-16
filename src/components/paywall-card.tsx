@@ -1,7 +1,25 @@
 import Link from "next/link";
+import { billingMode } from "@/lib/env";
 
 /** P4 core component: shown in place of a premium body. */
 export function PaywallCard({ signedIn }: { signedIn: boolean }) {
+  if (billingMode() === "waitlist") {
+    return (
+      <div className="rounded-2xl border border-slate-900 bg-slate-900 p-6 text-white">
+        <p className="text-xs font-semibold uppercase tracking-wider text-amber-300">付費週報 Premium · 即將開放</p>
+        <h3 className="mt-2 text-xl font-bold">加入候補，開放時第一個讀到全文</h3>
+        <p className="mt-2 text-sm text-slate-300">
+          每週 5 分鐘：發生什麼 → 錢怎麼流 → 對球迷的影響。每個數字都附來源。
+        </p>
+        <Link
+          href="/pricing#waitlist"
+          className="mt-5 inline-block rounded-full bg-white px-5 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-100"
+        >
+          加入候補 Join the waitlist
+        </Link>
+      </div>
+    );
+  }
   return (
     <div className="rounded-2xl border border-slate-900 bg-slate-900 p-6 text-white">
       <p className="text-xs font-semibold uppercase tracking-wider text-amber-300">付費週報 Premium</p>
