@@ -19,6 +19,15 @@ export function isMlbCbaSettled(): boolean {
   return process.env.MLB_CBA_SETTLED === "true";
 }
 
+/**
+ * UC-02: "waitlist" (default) keeps payments closed and shows the waitlist form;
+ * "stripe" re-enables Checkout. Decision 2026-11-16 (docs/02-strategy.md §4).
+ */
+export type BillingMode = "waitlist" | "stripe";
+export function billingMode(): BillingMode {
+  return process.env.BILLING_MODE === "stripe" ? "stripe" : "waitlist";
+}
+
 export function requireEnv(name: string): string {
   const value = process.env[name];
   if (!value) throw new Error(`Missing environment variable: ${name}`);

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { DataSourceNotice } from "@/components/data-source-notice";
 import { GameCard } from "@/components/game-card";
 import { KeyDates } from "@/components/key-dates";
+import { billingMode } from "@/lib/env";
 import { CASES } from "@/lib/business";
 import { getBriefs } from "@/lib/data/briefs";
 import { getGamesForTaipeiDate, getTaipeiToday } from "@/lib/data/games";
@@ -51,7 +52,11 @@ export default function Home() {
 
       <section className="grid gap-4 sm:grid-cols-3">
         <Tier tag="免費" title="台灣時間賽程 + 球隊與聯盟入門" href="/teams" cta="瀏覽球隊" />
-        <Tier tag="付費" title="運動商業週報" href="/pricing" cta="查看方案" />
+        {billingMode() === "waitlist" ? (
+          <Tier tag="即將開放" title="付費運動商業週報" href="/pricing#waitlist" cta="加入候補" />
+        ) : (
+          <Tier tag="付費" title="運動商業週報" href="/pricing" cta="查看方案" />
+        )}
         <Tier tag="高單價" title="美國觀賽旅遊（合法旅行社承辦）" href="/trips" cta="填寫需求" />
       </section>
 

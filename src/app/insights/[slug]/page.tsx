@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Markdown } from "@/components/markdown";
+import { WaitlistForm } from "@/components/waitlist-form";
+import { billingMode } from "@/lib/env";
 import { LEAGUES } from "@/lib/catalog";
 import { getInsight, getInsights } from "@/lib/data/insights";
 
@@ -54,6 +56,8 @@ export default async function InsightPage({ params }: PageProps<"/insights/[slug
           閱讀週報
         </Link>
       </section>
+
+      {billingMode() === "waitlist" && <WaitlistForm compact />}
 
       {related.length > 0 && (
         <section>

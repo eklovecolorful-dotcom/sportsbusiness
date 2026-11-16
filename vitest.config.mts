@@ -2,6 +2,12 @@ import path from "node:path";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  resolve: { alias: { "@": path.resolve(import.meta.dirname, "src") } },
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "src"),
+      // `server-only` throws outside the react-server condition; tests run server code directly.
+      "server-only": path.resolve(import.meta.dirname, "src/test/empty.ts"),
+    },
+  },
   test: { include: ["src/**/*.test.ts"] },
 });

@@ -1,11 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { siteUrl } from "@/lib/env";
+import { billingMode, siteUrl } from "@/lib/env";
 import { getStripe, PLANS, priceIdFor, type PlanKey } from "@/lib/stripe";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 // UC-02: Subscribe → Stripe Checkout. Entitlement is granted by the webhook, never here.
 export async function POST(request: NextRequest) {
+  // Payments are closed until the provider decision (docs/02-strategy.md §4).
+  if (billingMode() !== "stripe") return NextResponse.redirect(new URL("/pricing#waitlist", siteUrl), 303);
+
   const user = await getCurrentUser();
   if (!user) return NextResponse.redirect(new URL("/login?next=/pricing", siteUrl), 303);
 
